@@ -45,7 +45,7 @@ const notificationAuthentication = (req, res, next) => {
 
         const token = authorization.split(" ")[1];
 
-        if (token !== process.env.CRON_SECRET_TOKEN) {
+        if (token !== process.env.CRON_SECRET) {
             const error = new Error("Unauthenticated");
             error.statusCode = 401;
             throw error;
