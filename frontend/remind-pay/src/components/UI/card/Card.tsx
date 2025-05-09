@@ -14,7 +14,7 @@ const Card = ({ children, className, title, description, icon }: CardProps) => {
     return (
         <div
             className={`
-                rounded-lg border border-gray-200 bg-white text-card-foreground shadow-2xs p-6 ${className}`}
+                rounded-lg border border-gray-200 bg-white text-card-foreground shadow-2xs p-4 md:p-6 ${className}`}
         >
             <div className="flex flex-row items-center justify-between pb-2 border-b border-gray-100">
                 <div className="space-y-1">

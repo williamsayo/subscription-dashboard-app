@@ -60,7 +60,7 @@ const SubscriptionStatusToggle = ({
                 className={
                     isActive
                         ? "border border-stone-200 bg-white hover:bg-neutral-50 hover:text-accent-foreground py-2 px-4"
-                        : "bg-[#0f172a] hover:bg-[#0f172ad5] text-white py-2 px-4"
+                        : "bg-[#0f172a] hover:bg-[#0f172ad5] text-white py-2 px-3"
                 }
                 onClick={() => setOpenDialog(true)}
             >

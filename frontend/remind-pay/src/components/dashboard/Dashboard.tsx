@@ -4,13 +4,13 @@ import StatsOverview from "./StatsOverview";
 import Subscriptions from "./Subscriptions";
 import Card from "../UI/card/Card";
 import SubscriptionForm from "./SubscriptionForm";
+import { ListPlus } from "lucide-react";
 
 const Dashboard = async ({
     subscriptions,
 }: {
     subscriptions: Subscription[];
 }) => {
-
     const totalMonthly = subscriptions
         .filter((sub) => sub.active)
         .reduce((sum, sub) => {
@@ -52,6 +52,9 @@ const Dashboard = async ({
                     <Card
                         title="Add Subscription"
                         description="Track a new subscription"
+                        icon={
+                            <ListPlus className="h-5 w-5 text-gray-500" />
+                        }
                     >
                         <div className="flex items-center justify-center h-[200px]">
                             <SubscriptionForm />

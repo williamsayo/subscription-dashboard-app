@@ -15,29 +15,32 @@ const activeSubscriptionNotification = async (req, res, next) => {
 
         const currentDate = new Date();
 
-        activeSubscriptions
-            .filter((subscription) =>
-                daysDifference(
-                    currentDate,
-                    new Date(subscription.nextBillingDate)
+        await Promise.all(
+            activeSubscriptions
+                .filter((subscription) =>
+                    daysDifference(
+                        currentDate,
+                        new Date(subscription.nextBillingDate)
+                    )
                 )
-            )
-            .map((subscription) =>
-                sendNotification(
-                    subscription.user_id.email,
-                    subscription.user_id.username,
-                    subscription.name,
-                    subscription.nextBilling.toLocaleDateString(),
-                    subscription.amount
+                .map((subscription) =>
+                    sendNotification(
+                        subscription.user_id.email,
+                        // "williamsayo04@gmail.com",
+                        subscription.user_id.username,
+                        subscription.name,
+                        subscription.nextBilling.toLocaleDateString(),
+                        subscription.amount
+                    )
                 )
-            );
+        );
+
+        res.status(200).json({
+            message: "Email notifications sent successfully",
+        });
     } catch (error) {
         next(error);
     }
-
-    res.status(200).json({
-        message: "Notifications sent successfully",
-    });
 };
 
 module.exports = { activeSubscriptionNotification };

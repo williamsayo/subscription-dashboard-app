@@ -48,7 +48,7 @@ const Subscriptions = ({
                         return (
                             <div
                                 key={subscription.id}
-                                className={`flex items-center justify-between p-4 rounded-lg ${
+                                className={`flex items-center justify-between p-2 md:p-4 rounded-lg ${
                                     subscription.active
                                         ? dueToday
                                             ? "bg-red-50 border border-red-200"
@@ -57,8 +57,8 @@ const Subscriptions = ({
                                 }`}
                             >
                                 <div className="flex items-center gap-3">
-                                    <span className="h-10 w-10 bg-[#0f172adb] rounded-full flex items-center justify-center">
-                                        <Tv className="h-5 w-5 text-gray-100" />
+                                    <span className="p-2 bg-[#0f172adb] rounded-full flex items-center justify-center">
+                                        <Tv className=" h-4 w-4 md:h-5 md:w-5 text-gray-100" />
                                     </span>
 
                                     <div>
