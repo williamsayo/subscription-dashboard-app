@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 
+const authRoutes = ["/signup", "/login", "/"];
+
 export const middleware = async (request: NextRequest) => {
     const authToken = request.cookies.get("token")?.value;
     const secret_key = new TextEncoder().encode(process.env.JSON_SECRET_KEY);
@@ -9,24 +11,14 @@ export const middleware = async (request: NextRequest) => {
         ? await jwtVerify(authToken, secret_key).catch(() => false)
         : false;
 
-    if (
-        !isAuthenticated &&
-        !(
-            request.nextUrl.pathname.startsWith("/signup") ||
-            request.nextUrl.pathname.startsWith("/login")
-        )
-    ) {
+    if (!isAuthenticated && !authRoutes.includes(request.nextUrl.pathname)) {
         const loginUrl = new URL(`/login`, request.url);
         loginUrl.searchParams.set("nexturl", request.nextUrl.pathname);
 
         return NextResponse.redirect(loginUrl);
     }
 
-    if (
-        isAuthenticated &&
-        (request.nextUrl.pathname.startsWith("/signup") ||
-            request.nextUrl.pathname.startsWith("/login"))
-    ) {
+    if (isAuthenticated && authRoutes.includes(request.nextUrl.pathname)) {
         return NextResponse.redirect(new URL("/dashboard", request.url));
     }
 
@@ -34,5 +26,5 @@ export const middleware = async (request: NextRequest) => {
 };
 
 export const config = {
-    matcher: [ "/dashboard/:path*", "/login", "/signup"],
+    matcher: ["/dashboard/:path*", "/login", "/signup", "/"],
 };

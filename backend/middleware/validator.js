@@ -47,10 +47,24 @@ const subscriptionCheck = [
         .withMessage("Must be a date and of format MM/DD/YYYY"),
 ];
 
+const phoneRegex = /^\+{1}([0-9]{5,14})$/;
+
+const userCheck = [
+    body("username", "username must be a minimum of 4 characters")
+        .trim()
+        .isLength({ min: 4 }),
+    emailTypeCheck,
+    body("phone", "invalid phone number")
+        .trim()
+        .optional()
+        .custom((value) => phoneRegex.test(value)),
+];
+
 module.exports = {
     emailTypeCheck,
     emailUniqueCheck,
     passwordLengthCheck,
     passwordEqualityCheck,
     subscriptionCheck,
+    userCheck,
 };

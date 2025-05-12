@@ -53,7 +53,7 @@ const Subscriptions = ({
                                         ? dueToday
                                             ? "bg-red-50 border border-red-200"
                                             : "bg-gray-50 border border-gray-100"
-                                        : "bg-white border border-dashed border-red-400"
+                                        : "bg-gray-100 border-dashed border border-gray-300"
                                 }`}
                             >
                                 <div className="flex items-center gap-3">

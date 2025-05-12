@@ -5,6 +5,7 @@ import Subscriptions from "./Subscriptions";
 import Card from "../UI/card/Card";
 import SubscriptionForm from "./SubscriptionForm";
 import { ListPlus } from "lucide-react";
+import NotificationCard from "./notification/NotificationCard";
 
 const Dashboard = async ({
     subscriptions,
@@ -49,17 +50,20 @@ const Dashboard = async ({
                     <div className="lg:col-span-2">
                         <Subscriptions subscriptions={subscriptions} />
                     </div>
-                    <Card
-                        title="Add Subscription"
-                        description="Track a new subscription"
-                        icon={
-                            <ListPlus className="h-5 w-5 text-gray-500" />
-                        }
-                    >
-                        <div className="flex items-center justify-center h-[200px]">
-                            <SubscriptionForm />
-                        </div>
-                    </Card>
+                    <div className="space-y-6">
+                        <NotificationCard />
+                        <Card
+                            title="Add Subscription"
+                            description="Track a new subscription"
+                            icon={
+                                <ListPlus className="h-5 w-5 text-gray-500" />
+                            }
+                        >
+                            <div className="flex items-center justify-center h-[200px]">
+                                <SubscriptionForm />
+                            </div>
+                        </Card>
+                    </div>
                 </div>
             </div>
         </div>

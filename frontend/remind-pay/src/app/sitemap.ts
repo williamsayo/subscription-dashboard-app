@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: new Date(),
         },
         {
-            url: "https://remind-pay.vercel.app",
+            url: "https://remind-pay.vercel.app/dashboard",
             lastModified: new Date(),
         },
     ];

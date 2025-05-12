@@ -18,7 +18,7 @@ const Card = ({ children, className, title, description, icon }: CardProps) => {
         >
             <div className="flex flex-row items-center justify-between pb-2 border-b border-gray-100">
                 <div className="space-y-1">
-                    <span className="text-sm font-medium text-gray-800 leading-none tracking-tight">
+                    <span className="text-md font-medium text-gray-800 leading-none tracking-tight">
                         {title}
                     </span>
                     <p className="text-sm text-muted-foreground text-gray-400">

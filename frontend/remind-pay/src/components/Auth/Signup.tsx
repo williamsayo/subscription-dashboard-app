@@ -50,9 +50,11 @@ const Signup = () => {
                         placeholder="email"
                         className="bg-[#F9F9F9] border-[#DDDDDD] rounded-md text-[#221F26] text-sm p-2 w-full h-10"
                     />
-                    <p className="text-red-800 text-sm">
-                        {errors?.error.email}
-                    </p>
+                    {errors?.error.email?.map((error) => (
+                        <p key={error} className="text-red-800 text-sm">
+                            {error}
+                        </p>
+                    ))}
                 </FormGroup>
                 <FormGroup>
                     <FormLabel htmlFor="password">password</FormLabel>

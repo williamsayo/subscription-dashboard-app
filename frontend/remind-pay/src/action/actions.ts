@@ -1,10 +1,12 @@
 "use server";
 
 import { headerProp } from "@/types/header";
+import { User } from "@/types/user";
 import {
     loginSchema,
     signUpSchema,
     subscriptionSchema,
+    userSchema,
 } from "@/util/definitions";
 import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
@@ -225,6 +227,78 @@ export const updateSubscriptionStatusAction = async (
             : "subscription reactivated successfully",
         success: true,
         data: data.message,
+    };
+};
+
+export const getUserAction = async () => {
+    const token = (await cookies()).get("token")?.value;
+    const response = await fetch(
+        `${process.env.BACKEND_URL || "http://localhost:3030/"}user`,
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            method: "GET",
+            cache: "force-cache",
+            next: {
+                tags: ["user"],
+            },
+        }
+    );
+
+    const { user }: { user: User } = await response.json();
+
+    return user;
+};
+
+export const updateUserAction = async (
+    previousState: unknown,
+    formData: FormData
+) => {
+    const validationResult = userSchema.safeParse({
+        username: formData.get("username"),
+        email: formData.get("email"),
+        phone: formData.get("phone"),
+    });
+
+    if (!validationResult.success) {
+        return {
+            error: {
+                ...validationResult.error.flatten().fieldErrors,
+            },
+        };
+    }
+
+    const { username, email, phone } = validationResult.data;
+
+    const body = JSON.stringify({
+        username,
+        email,
+        phone,
+    });
+
+    headers.Authorization = `Bearer ${(await cookies()).get("token")?.value}`;
+
+    const response = await fetch(`${baseURL}user/update`, {
+        method: "PATCH",
+        headers,
+        body,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        return {
+            success: false,
+            error: data.errors,
+        };
+    }
+
+    revalidateTag("user");
+
+    return {
+        success: true,
     };
 };
 
