@@ -307,3 +307,26 @@ export const logoutAction = async () => {
 
     redirect("/");
 };
+
+export const testNotificationAction = async () => {
+    headers.Authorization = `Bearer ${(await cookies()).get("token")?.value}`;
+
+    const response = await fetch(`${baseURL}notification/email/test-reminder`, {
+        method: "GET",
+        headers,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        return {
+            message: "Failed to send notification",
+            success: false,
+        };
+    }
+
+    return {
+        message: data.message,
+        success: true,
+    };
+};

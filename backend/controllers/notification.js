@@ -1,4 +1,5 @@
 const Subscription = require("../models/subscription");
+const User = require("../models/user");
 const sendNotification = require("../services/mail");
 
 const daysDifference = (today, billingDate) => {
@@ -43,4 +44,31 @@ const activeSubscriptionNotification = async (req, res, next) => {
     }
 };
 
-module.exports = { activeSubscriptionNotification };
+const testNotification = async (req, res, next) => {
+    const currentDate = new Date();
+    try {
+        const user = await User.findById(req.user_id);
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+            });
+        }
+
+        sendNotification(
+            user.email,
+            user.username,
+            "test_subscription",
+            currentDate.toLocaleDateString(),
+            "test_amount"
+        );
+
+        res.status(200).json({
+            message: "Email notification sent successfully",
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+module.exports = { activeSubscriptionNotification, testNotification };

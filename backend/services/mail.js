@@ -47,7 +47,9 @@ const sendNotification = async (
             subscription_name,
             date,
             amount,
-            // dashboard: process.env.DASHBOARD_LINK,
+            dashboard:
+                process.env.DASHBOARD_LINK ||
+                " http://localhost:3000/dashboard",
         },
     });
 

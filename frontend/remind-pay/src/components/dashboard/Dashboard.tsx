@@ -6,12 +6,28 @@ import Card from "../UI/card/Card";
 import SubscriptionForm from "./SubscriptionForm";
 import { ListPlus } from "lucide-react";
 import NotificationCard from "./notification/NotificationCard";
+import { cookies } from "next/headers";
+import { jwtVerify } from "jose";
 
 const Dashboard = async ({
     subscriptions,
 }: {
     subscriptions: Subscription[];
 }) => {
+    const getEmail = async (): Promise<string> => {
+        const authToken = (await cookies()).get("token")?.value;
+        const secret_key = new TextEncoder().encode(
+            process.env.JSON_SECRET_KEY
+        );
+
+        const data = authToken
+            ? await jwtVerify(authToken, secret_key)
+            : undefined;
+        const email = (data?.payload.email as string) ?? "";
+        return email;
+    };
+
+    const email = await getEmail();
     const totalMonthly = subscriptions
         .filter((sub) => sub.active)
         .reduce((sum, sub) => {
@@ -51,7 +67,7 @@ const Dashboard = async ({
                         <Subscriptions subscriptions={subscriptions} />
                     </div>
                     <div className="space-y-6">
-                        <NotificationCard />
+                        <NotificationCard email={email} />
                         <Card
                             title="Add Subscription"
                             description="Track a new subscription"

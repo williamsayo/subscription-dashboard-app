@@ -1,12 +1,13 @@
 "use client";
 
+import { testNotificationAction } from "@/action/actions";
 import Button from "@/components/UI/Button";
 import { Switch } from "@mui/material";
 import { Mail, MailCheck, MailMinus } from "lucide-react";
 import React, { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
 
-const NotificationCard = () => {
+const NotificationCard = ({ email }: { email: string }) => {
     const [emailEnabled, setEmailEnabled] = useState(true);
 
     const handleToggleEmail = (event: ChangeEvent<HTMLInputElement>) => {
@@ -25,11 +26,15 @@ const NotificationCard = () => {
         );
     };
 
-    const handleTestEmail = () => {
-        toast.success(`Test email sent to ${"userEmail"}.`, {
-            icon: <MailCheck className="h-4 w-4 text-green-600" />,
-        });
+    const handleTestEmail = async () => {
+        const { message, success } = await testNotificationAction();
+        if (success)
+            toast.success(`Test email sent to ${email}.`, {
+                icon: <MailCheck className="h-4 w-4 text-green-600" />,
+            });
+        if (!success) toast.error(message);
     };
+
     return (
         <div
             className={`
@@ -66,7 +71,7 @@ const NotificationCard = () => {
             <div className="space-y-4 my-4">
                 <div className="text-sm">
                     <p>Notification will be sent to:</p>
-                    <p className="font-medium mt-1">{"userEmail"}</p>
+                    <p className="font-medium mt-1">{email}</p>
                 </div>
 
                 <div className="bg-gray-50 border border-gray-200 rounded-md p-3 text-sm">
