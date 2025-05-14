@@ -3,6 +3,7 @@ import Button from "@/components/UI/Button";
 import FormGroup from "@/components/UI/FormGroup";
 import FormLabel from "@/components/UI/FormLabel";
 import Input from "@/components/UI/Input";
+import Toast from "@/components/UI/Toast";
 import { User } from "@/types/user";
 import {
     Dialog,
@@ -10,7 +11,7 @@ import {
     DialogContent,
     DialogTitle,
 } from "@mui/material";
-import { X } from "lucide-react";
+import { CircleX, UserRoundCheck, X } from "lucide-react";
 import { useActionState, useEffect } from "react";
 import toast from "react-hot-toast";
 
@@ -29,15 +30,31 @@ export default function ProfileDialog({
 
     useEffect(() => {
         if (errors?.success) {
-            toast.success(
-                "Profile updated successfully! Your changes have been saved."
-            );
+            toast((t) => (
+                <Toast
+                    t={t}
+                    description={
+                        "Profile updated successfully! Your changes have been saved."
+                    }
+                >
+                    <>
+                        <UserRoundCheck className="h-4 w-4 text-gray-800" />
+                        User update successful
+                    </>
+                </Toast>
+            ));
+
             closeDialog();
         }
         if (errors?.success === false) {
-            toast.error(
-                "Profile update failed."
-            );
+            toast((t) => (
+                <Toast t={t} description={"Profile update failed."}>
+                    <>
+                        <CircleX className="h-4 w-4 text-red-500 " />
+                        Error
+                    </>
+                </Toast>
+            ));
         }
     }, [errors, closeDialog]);
 

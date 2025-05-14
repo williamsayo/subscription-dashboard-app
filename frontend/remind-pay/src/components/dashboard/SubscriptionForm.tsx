@@ -6,7 +6,7 @@ import FormGroup from "../UI/FormGroup";
 import FormLabel from "../UI/FormLabel";
 import Input from "../UI/Input";
 import Button from "../UI/Button";
-import { Plus, X } from "lucide-react";
+import { CheckCheck, CircleX, Plus, X } from "lucide-react";
 import { Dayjs } from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -21,6 +21,7 @@ import { DesktopDatePicker } from "@mui/x-date-pickers";
 import { Subscription } from "@/types/subscription";
 import { subscriptionAction } from "@/action/actions";
 import toast from "react-hot-toast";
+import Toast from "../UI/Toast";
 
 const SubscriptionForm = () => {
     // const modalRef = useRef<modalRef | null>(null);
@@ -33,7 +34,29 @@ const SubscriptionForm = () => {
     useEffect(() => {
         if (errors?.success) {
             setOpenDialog(false);
-            toast.success("Subscription has been added successfully.");
+            toast((t) => (
+                <Toast
+                    t={t}
+                    description={
+                        errors?.success
+                            ? "Subscription has been added successfully"
+                            : "Subscription failed."
+                    }
+                >
+                    {errors?.success ? (
+                        <>
+                            <CheckCheck className="h-4 w-4 text-gray-800" />
+                            Success
+                        </>
+                    ) : (
+                        <>
+                            <CircleX className="h-4 w-4 text-red-500 " />
+                            Error
+                        </>
+                    )}
+                </Toast>
+            ));
+            // toast.success("Subscription has been added successfully.");
         }
     }, [errors?.success]);
 

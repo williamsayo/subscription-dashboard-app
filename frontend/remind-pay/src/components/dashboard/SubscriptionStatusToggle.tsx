@@ -1,11 +1,6 @@
 "use client";
 
-import React, {
-    useActionState,
-    useEffect,
-    useState,
-    useTransition,
-} from "react";
+import React, { useEffect, useState, useTransition } from "react";
 import Button from "../UI/Button";
 import {
     Dialog,
@@ -15,7 +10,8 @@ import {
 } from "@mui/material";
 import { updateSubscriptionStatusAction } from "@/action/actions";
 import toast from "react-hot-toast";
-import { CircleX } from "lucide-react";
+import { CheckCheck, CircleX } from "lucide-react";
+import Toast from "../UI/Toast";
 
 const SubscriptionStatusToggle = ({
     id,
@@ -27,31 +23,40 @@ const SubscriptionStatusToggle = ({
     isActive: boolean;
 }) => {
     const [openDialog, setOpenDialog] = useState<boolean>(false);
-
-    const updatedAction = updateSubscriptionStatusAction.bind(null, isActive);
-    const [state, action] = useActionState(updatedAction, null);
-
+    const [state, setState] = useState({
+        message: "",
+        success: false,
+    });
     const [pending, startTransition] = useTransition();
 
     const toggleStatus = () => {
         // send api request
-        startTransition(() => action(id));
+        startTransition(async () => {
+            const result = await updateSubscriptionStatusAction(isActive, id);
+            setState(result);
+        });
 
         // close dialog
         setOpenDialog(false);
     };
 
     useEffect(() => {
-        if (state?.success)
-            toast.success(`${title} ${state.message}`, {
-                // icon:
-            });
-        if (state && !state?.success) {
-            toast.remove();
-            toast.error(`${title} ${state.message}`, {
-                icon: <CircleX className="text-red-500 text-sm" />,
-            });
-        }
+        if (state?.message)
+            toast((t) => (
+                <Toast t={t} description={`${title} ${state.message}`}>
+                    {state?.success ? (
+                        <>
+                            <CheckCheck className="h-4 w-4 text-gray-800" />
+                            Success
+                        </>
+                    ) : (
+                        <>
+                            <CircleX className="h-4 w-4 text-red-500 " />
+                            Error
+                        </>
+                    )}
+                </Toast>
+            ));
     }, [state, title]);
 
     return (

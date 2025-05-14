@@ -34,7 +34,7 @@ const sendNotification = async (
     const mail = await client.send({
         from: sender,
         to: recipients,
-        template_uuid: "eb0b3362-a802-4cf1-9e83-997742014fac",
+        template_uuid: process.env.MAIL_TRAP_TEMPLATE_UUID,
         template_variables: {
             name,
             subscription_name,

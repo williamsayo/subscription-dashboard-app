@@ -198,7 +198,7 @@ export const subscriptionAction = async (
 
 export const updateSubscriptionStatusAction = async (
     active: boolean,
-    previousState: unknown,
+    // previousState: unknown,
     id: string | number
 ) => {
     headers.Authorization = `Bearer ${(await cookies()).get("token")?.value}`;

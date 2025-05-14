@@ -2,37 +2,72 @@
 
 import { testNotificationAction } from "@/action/actions";
 import Button from "@/components/UI/Button";
+import Toast from "@/components/UI/Toast";
 import { Switch } from "@mui/material";
-import { Mail, MailCheck, MailMinus } from "lucide-react";
-import React, { ChangeEvent, useState } from "react";
+import { CircleX, Mail, MailCheck, MailMinus, Send } from "lucide-react";
+import React, { ChangeEvent, use, useState } from "react";
 import toast from "react-hot-toast";
 
-const NotificationCard = ({ email }: { email: string }) => {
+const NotificationCard = ({
+    emailPromise,
+}: {
+    emailPromise: Promise<string>;
+}) => {
+    const email = use(emailPromise);
     const [emailEnabled, setEmailEnabled] = useState(true);
 
     const handleToggleEmail = (event: ChangeEvent<HTMLInputElement>) => {
         event.preventDefault();
         const checked = event.target.checked;
         setEmailEnabled(checked);
-        toast.success(
-            checked ? "Notifications enabled" : "Notifications disabled",
-            {
-                icon: checked ? (
-                    <MailCheck className="h-4 w-4 text-gray-800" />
+        toast((t) => (
+            <Toast
+                t={t}
+                description={
+                    checked
+                        ? "You will now receive email notifications about yoursubscription"
+                        : "Email notifications have been turned off"
+                }
+            >
+                {checked ? (
+                    <>
+                        <MailCheck className="h-4 w-4 text-gray-800" />
+                        Notifications enabled
+                    </>
                 ) : (
-                    <MailMinus className="h-4 w-4 text-gray-800" />
-                ),
-            }
-        );
+                    <>
+                        <MailMinus className="h-4 w-4 text-gray-800" />
+                        Notifications disabled
+                    </>
+                )}
+            </Toast>
+        ));
     };
 
     const handleTestEmail = async () => {
         const { message, success } = await testNotificationAction();
-        if (success)
-            toast.success(`Test email sent to ${email}.`, {
-                icon: <MailCheck className="h-4 w-4 text-green-600" />,
-            });
-        if (!success) toast.error(message);
+        toast((t) => (
+            <Toast
+                t={t}
+                description={
+                    success
+                        ? `Test Notification has been sent to ${email}.`
+                        : message
+                }
+            >
+                {success ? (
+                    <>
+                        <Send className="h-4 w-4 text-gray-800" />
+                        Test notifications sent
+                    </>
+                ) : (
+                    <>
+                        <CircleX className="h-4 w-4 text-red-500 " />
+                        Error
+                    </>
+                )}
+            </Toast>
+        ));
     };
 
     return (

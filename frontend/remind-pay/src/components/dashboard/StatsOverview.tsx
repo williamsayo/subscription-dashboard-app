@@ -1,24 +1,41 @@
 import { Subscription } from "@/types/subscription";
-import React from "react";
+import React, { use } from "react";
 import Card from "../UI/card/Card";
 import { Calendar, CreditCard, DollarSign } from "lucide-react";
 
-interface StatsOverviewProps {
-    subscriptions: Subscription[];
-    totalMonthly: number;
-    totalYearly: number;
-    activeSubscriptions: number;
-    cancelledSubscriptions: number;
-}
+type StatsOverviewProps = {
+    subscriptionsPromise: Promise<Subscription[]>;
+    // totalMonthly: number;
+    // totalYearly: number;
+    // activeSubscriptions: number;
+    // cancelledSubscriptions: number;
+};
 
-const StatsOverview = ({
-    subscriptions,
-    totalMonthly,
-    totalYearly,
-    activeSubscriptions,
-    cancelledSubscriptions,
-}: StatsOverviewProps) => {
-    
+const StatsOverview = ({ subscriptionsPromise }: StatsOverviewProps) => {
+    const subscriptions = use(subscriptionsPromise);
+    const totalMonthly = subscriptions
+        .filter((sub) => sub.active)
+        .reduce((sum, sub) => {
+            switch (sub.billingFrequency) {
+                case "monthly":
+                    return sum + sub.amount;
+                case "quarterly":
+                    return sum + sub.amount / 3;
+                case "yearly":
+                    return sum + sub.amount / 12;
+                default:
+                    return sum;
+            }
+        }, 0);
+
+    const totalYearly = totalMonthly * 12;
+    const activeSubscriptions = subscriptions.filter(
+        (sub) => sub.active
+    ).length;
+    const cancelledSubscriptions = subscriptions.filter(
+        (sub) => !sub.active
+    ).length;
+
     const nextPayment = subscriptions
         .filter((sub) => sub.active)
         .sort(
