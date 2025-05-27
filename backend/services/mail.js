@@ -31,7 +31,7 @@ const sendNotification = async (
             viewEngine: {
                 defaultLayout: false,
             },
-            viewPath: path.join(process.mainModule.path, "template"),
+            viewPath: "template",
             extName: ".hbs",
         })
     );
