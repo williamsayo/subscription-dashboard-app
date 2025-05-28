@@ -1,11 +1,5 @@
 {
     "version": 2,
-
-    "functions": {
-        "api/index.js": {
-            "includeFiles": "template/email_notification.hbs"
-        }
-    },
     "rewrites": [{ "source": "/(.*)", "destination": "/api" }],
 
     "crons": [
