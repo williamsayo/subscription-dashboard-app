@@ -14,7 +14,7 @@
         }
     ],
     "functions": {
-        "servics/mail.js": {
+        "services/mail.js": {
             "includeFiles": "template/email_notification.hbs"
         }
     }
