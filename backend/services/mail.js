@@ -12,48 +12,48 @@ const sendNotification = async (
     date,
     amount
 ) => {
-    // const { default: nodemailerHandlebars } = await import(
-    //     "nodemailer-express-handlebars"
-    // );
-    // const transporter = nodemailer.createTransport({
-    //     service: "gmail",
-    //     host: "smtp.gmail.com",
-    //     secure: false, // use TLS
-    //     port: 587,
-    //     auth: {
-    //         user: process.env.GMAIL_USER,
-    //         pass: process.env.GMAIL_PASS,
-    //     },
-    //     from: process.env.GMAIL_USER,
-    // });
+    const { default: nodemailerHandlebars } = await import(
+        "nodemailer-express-handlebars"
+    );
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        host: "smtp.gmail.com",
+        secure: false, // use TLS
+        port: 587,
+        auth: {
+            user: process.env.GMAIL_USER,
+            pass: process.env.GMAIL_PASS,
+        },
+        from: process.env.GMAIL_USER,
+    });
 
-    // transporter.use(
-    //     "compile",
-    //     nodemailerHandlebars({
-    //         viewEngine: {
-    //             defaultLayout: false,
-    //         },
-    //         viewPath: "",
-    //         extName: ".hbs",
-    //     })
-    // );
+    transporter.use(
+        "compile",
+        nodemailerHandlebars({
+            viewEngine: {
+                defaultLayout: false,
+            },
+            viewPath: path.join(process.cwd(), "template"),
+            extName: ".hbs",
+        })
+    );
 
-    // const mailInfo = await transporter.sendMail({
-    //     from: { name: "Remind Pay", address: process.env.GMAIL_USER },
-    //     to: recipient,
-    //     subject: "Your Subscription is Ending Soon",
-    //     text: "Subscription notification",
-    //     template: path.join(process.cwd(), "template", "email_notification"),
-    //     context: {
-    //         name,
-    //         subscription_name,
-    //         date,
-    //         amount,
-    //         dashboard:
-    //             process.env.DASHBOARD_LINK ||
-    //             " http://localhost:3000/dashboard",
-    //     },
-    // });
+    const mailInfo = transporter.sendMail({
+        from: { name: "Remind Pay", address: process.env.GMAIL_USER },
+        to: recipient,
+        subject: "Your Subscription is Ending Soon",
+        text: "Subscription notification",
+        template: "email_notification",
+        context: {
+            name,
+            subscription_name,
+            date,
+            amount,
+            dashboard:
+                process.env.DASHBOARD_LINK ||
+                " http://localhost:3000/dashboard",
+        },
+    });
 
     const test = fs.readFileSync(
         path.join(process.cwd(), "template", "email_notification.hbs")
