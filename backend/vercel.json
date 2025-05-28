@@ -12,5 +12,10 @@
             "path": "/notification/email/send-reminders",
             "schedule": "0 0 */7 * *"
         }
-    ]
+    ],
+    "functions": {
+        "servics/mail.js": {
+            "includeFiles": "template/email_notification.hbs"
+        }
+    }
 }
