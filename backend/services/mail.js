@@ -2,6 +2,7 @@ const { MailtrapClient } = require("mailtrap");
 
 const nodemailer = require("nodemailer");
 const path = require("path");
+const hbsOptions = require("../index");
 
 const sendNotification = async (
     recipient,
@@ -10,9 +11,9 @@ const sendNotification = async (
     date,
     amount
 ) => {
-    const { default: nodemailerHandlebars } = await import(
-        "nodemailer-express-handlebars"
-    );
+    // const { default: nodemailerHandlebars } = await import(
+    //     "nodemailer-express-handlebars"
+    // );
     const transporter = nodemailer.createTransport({
         service: "gmail",
         host: "smtp.gmail.com",
@@ -27,13 +28,14 @@ const sendNotification = async (
 
     transporter.use(
         "compile",
-        nodemailerHandlebars({
-            viewEngine: {
-                defaultLayout: false,
-            },
-            viewPath: "template",
-            extName: ".hbs",
-        })
+        hbsOptions
+        // nodemailerHandlebars({
+        //     viewEngine: {
+        //         defaultLayout: false,
+        //     },
+        //     viewPath: "template",
+        //     extName: ".hbs",
+        // })
     );
 
     const mailInfo = await transporter.sendMail({

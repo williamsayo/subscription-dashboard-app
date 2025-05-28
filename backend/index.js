@@ -19,6 +19,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "template")));
 
+const { default: nodemailerHandlebars } = await import(
+    "nodemailer-express-handlebars"
+);
+
+const hbsOptions = nodemailerHandlebars({
+    viewEngine: {
+        defaultLayout: false,
+    },
+    viewPath: path.join(__dirname, ""),
+    extName: ".hbs",
+});
+
+module.exports = hbsOptions;
+
 app.use("/subscription", subscriptionRoutes);
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
