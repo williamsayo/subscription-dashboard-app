@@ -9,6 +9,7 @@ const userRoutes = require("./routes/user");
 const notificationRoutes = require("./routes/notification");
 const cors = require("cors");
 const helmet = require("helmet");
+const path = require("path");
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(cors());
 app.use(helmet());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "template")));
 
 app.use("/subscription", subscriptionRoutes);
 app.use("/auth", authRoutes);
