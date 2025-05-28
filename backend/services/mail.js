@@ -11,9 +11,9 @@ const sendNotification = async (
     date,
     amount
 ) => {
-    // const { default: nodemailerHandlebars } = await import(
-    //     "nodemailer-express-handlebars"
-    // );
+    const { default: nodemailerHandlebars } = await import(
+        "nodemailer-express-handlebars"
+    );
     const transporter = nodemailer.createTransport({
         service: "gmail",
         host: "smtp.gmail.com",
@@ -28,14 +28,13 @@ const sendNotification = async (
 
     transporter.use(
         "compile",
-        hbsOptions
-        // nodemailerHandlebars({
-        //     viewEngine: {
-        //         defaultLayout: false,
-        //     },
-        //     viewPath: "template",
-        //     extName: ".hbs",
-        // })
+        nodemailerHandlebars({
+            viewEngine: {
+                defaultLayout: false,
+            },
+            viewPath: "template",
+            extName: ".hbs",
+        })
     );
 
     const mailInfo = await transporter.sendMail({
