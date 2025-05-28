@@ -1,16 +1,13 @@
 {
     "version": 2,
+
     "functions": {
         "api/index.js": {
             "includeFiles": ["template/email_notification.hbs"]
         }
     },
-    "routes": [
-        {
-            "src": "/(.*)",
-            "dest": "/"
-        }
-    ],
+    "rewrites": [{ "source": "/(.*)", "destination": "/api" }],
+
     "crons": [
         {
             "path": "/notification/email/send-reminders",
