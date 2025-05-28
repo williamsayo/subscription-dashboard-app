@@ -3,6 +3,7 @@ const { MailtrapClient } = require("mailtrap");
 const nodemailer = require("nodemailer");
 const path = require("path");
 const hbsOptions = require("../index");
+const fs = require("fs");
 
 const sendNotification = async (
     recipient,
@@ -32,7 +33,7 @@ const sendNotification = async (
             viewEngine: {
                 defaultLayout: false,
             },
-            viewPath: "template",
+            viewPath: "",
             extName: ".hbs",
         })
     );
@@ -42,7 +43,7 @@ const sendNotification = async (
         to: recipient,
         subject: "Your Subscription is Ending Soon",
         text: "Subscription notification",
-        template: "email_notification",
+        template: path.join(process.cwd(), "template", "email_notification"),
         context: {
             name,
             subscription_name,
@@ -54,7 +55,11 @@ const sendNotification = async (
         },
     });
 
-    return mailInfo;
+    const test = fs.readFileSync(
+        path.join(process.cwd(), "template", "email_notification.hbs")
+    );
+
+    return test;
 };
 
 // const sendNotification = async (
