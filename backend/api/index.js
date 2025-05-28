@@ -40,3 +40,6 @@ try {
 } catch (error) {
     console.log("Server Error");
 }
+
+
+module.exports = app;
