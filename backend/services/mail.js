@@ -1,8 +1,5 @@
-const { MailtrapClient } = require("mailtrap");
-
 const nodemailer = require("nodemailer");
 const path = require("path");
-const fs = require("fs");
 
 const template = (name, subscription_name, date, amount, dashboard) => {
     return `
@@ -258,7 +255,7 @@ const sendNotification = async (
         })
     );
 
-    transporter.sendMail({
+    const mailInfo = await transporter.sendMail({
         from: { name: "Remind Pay", address: process.env.GMAIL_USER },
         to: recipient,
         subject: "Your Subscription is Ending Soon",
@@ -281,6 +278,8 @@ const sendNotification = async (
         //         " http://localhost:3000/dashboard",
         // },
     });
+
+    return mailInfo;
 };
 
 module.exports = sendNotification;
