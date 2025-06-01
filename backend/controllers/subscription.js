@@ -30,6 +30,7 @@ const addSubsciption = async (req, res, next) => {
             message: "Subscription created successfully",
             subscription,
         });
+
     } catch (error) {
         next(error);
     }

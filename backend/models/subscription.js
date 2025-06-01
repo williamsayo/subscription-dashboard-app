@@ -7,10 +7,10 @@ function getNextBillingDate(billingDate, billingFrequency) {
     const nextBillingDate = new Date(billingDate);
 
     if (nextBillingDate < currentDate) {
-        nextBillingDate.setFullYear(currentYear);
         const currentYear = currentDate.getFullYear();
         const currentMonth = currentDate.getMonth();
         const billingMonth = nextBillingDate.getMonth();
+        nextBillingDate.setFullYear(currentYear);
         switch (billingFrequency) {
             case "monthly":
                 nextBillingDate.setMonth(currentMonth);
@@ -43,7 +43,6 @@ const SubscriptionSchema = new Schema(
         name: {
             type: String,
             required: true,
-            unique: true,
         },
         amount: {
             type: Number,
@@ -82,14 +81,14 @@ const SubscriptionSchema = new Schema(
     }
 );
 
-SubscriptionSchema.virtual("nextBillingDate")
-    // .get(function () {
-    //     return getNextBillingDate(this.nextBilling, this.billingFrequency);
-    // })
-    .set(function (nextBillingDate) {
-        this.set({ nextBilling: nextBillingDate });
-        this.save();
-    });
+// SubscriptionSchema.virtual("nextBillingDate")
+//     .get(function () {
+//         return getNextBillingDate(this.nextBilling, this.billingFrequency);
+//     })
+//     .set(function (nextBillingDate) {
+//         this.set({ nextBilling: nextBillingDate });
+//         this.save();
+//     });
 
 module.exports = mongoose.model("Subscription", SubscriptionSchema);
 module.exports.getNextBillingDate = getNextBillingDate;

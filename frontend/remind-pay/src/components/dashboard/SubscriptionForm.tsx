@@ -176,12 +176,13 @@ const SubscriptionForm = () => {
                             >
                                 Next Billing Date
                             </FormLabel>
-                            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <LocalizationProvider dateAdapter={AdapterDayjs} >
                                 <DesktopDatePicker
                                     value={selectedDate}
                                     onChange={(newValue) =>
                                         setSelectedDate(newValue)
                                     }
+                                    format="YYYY-MM-DD"
                                     // disablePast
                                     views={["month", "year", "day"]}
                                     slotProps={{

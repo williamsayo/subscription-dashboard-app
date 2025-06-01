@@ -54,7 +54,7 @@ npm install
 To test the project works as expected, run
 
 ```bash
-npm start
+npm run dev
 ```
 
 Open `http://localhost:3030` on your browser to see the result.

@@ -1,5 +1,6 @@
 const { body } = require("express-validator");
 const User = require("../models/user");
+const Subscription = require("../models/subscription");
 
 const emailTypeCheck = body("email")
     .trim()
@@ -31,7 +32,15 @@ const passwordEqualityCheck = body("confirm_password")
 const subscriptionCheck = [
     body("subscription_name", "Subscription name field is required")
         .trim()
-        .notEmpty(),
+        .notEmpty()
+        .custom(async (value, { req }) => {
+            const subscription = await Subscription.findOne({
+                user_id: req.user_id,
+                name: value,
+            });
+            if (subscription) return Promise.reject("Subscription already exists");
+            return true;
+        }),
     body("amount")
         .trim()
         .notEmpty()

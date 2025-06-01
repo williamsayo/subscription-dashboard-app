@@ -31,9 +31,9 @@ const Subscriptions = ({
             {subscriptions.length > 0 ? (
                 subscriptions.map((subscription) => {
                     const today = new Date();
-                    const billingDate = new Date(subscription.nextBillingDate);
+                    const billingDate = new Date(subscription.nextBilling);
                     const nextBilling = new Date(
-                        subscription.nextBillingDate
+                        subscription.nextBilling
                     ).toLocaleDateString();
                     const cancellationDate = new Date(
                         subscription.updatedAt
@@ -72,7 +72,10 @@ const Subscriptions = ({
                                                 <BellRing className="h-3 w-3" />{" "}
                                                 Due in{" "}
                                                 {paymentStatus.differenceInDays}{" "}
-                                                days
+                                                {paymentStatus.differenceInDays >
+                                                1
+                                                    ? "days"
+                                                    : "day"}
                                             </Badge>
                                         )}
 

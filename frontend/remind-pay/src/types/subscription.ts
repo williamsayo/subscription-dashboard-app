@@ -3,7 +3,7 @@ export type Subscription = {
     name: string;
     amount: number;
     nextBilling: string;
-    nextBillingDate: string;
+    // nextBillingDate: string;
     originalBillingDate: string;
     active: boolean;
     billingFrequency: "monthly" | "quarterly" | "yearly";

@@ -40,8 +40,8 @@ const StatsOverview = ({ subscriptionsPromise }: StatsOverviewProps) => {
         .filter((sub) => sub.active)
         .sort(
             (a, b) =>
-                new Date(a.nextBillingDate).getTime() -
-                new Date(b.nextBillingDate).getTime()
+                new Date(a.nextBilling).getTime() -
+                new Date(b.nextBilling).getTime()
         )[0];
 
     return (
@@ -80,7 +80,7 @@ const StatsOverview = ({ subscriptionsPromise }: StatsOverviewProps) => {
                         </div>
                         <p className="text-xs text-muted-foreground">
                             {new Date(
-                                nextPayment.nextBillingDate
+                                nextPayment.nextBilling
                             ).toLocaleDateString()}
                         </p>
                     </>
