@@ -45,7 +45,6 @@ const activeSubscriptionNotification = async (req, res, next) => {
 };
 
 const testNotification = async (req, res, next) => {
-    const currentDate = new Date();
     try {
         const user = await User.findById(req.user_id);
 
@@ -55,17 +54,16 @@ const testNotification = async (req, res, next) => {
             });
         }
 
-        const info = await sendNotification(
+        await sendNotification(
             user.email,
             user.username,
             "test_subscription",
-            currentDate.toLocaleDateString(),
+            new Date().toLocaleDateString(),
             "test_amount"
         );
 
         res.status(200).json({
             message: "Email notification sent successfully",
-            info,
         });
     } catch (error) {
         next(error);

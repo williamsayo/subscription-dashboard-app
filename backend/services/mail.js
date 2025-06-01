@@ -253,38 +253,34 @@ const sendNotification = async (
             viewEngine: {
                 defaultLayout: false,
             },
-            viewPath: "",
+            viewPath: path.resolve(process.cwd(), "template"),
             extName: ".hbs",
         })
     );
 
-    const mailInfo = transporter.sendMail({
+    transporter.sendMail({
         from: { name: "Remind Pay", address: process.env.GMAIL_USER },
         to: recipient,
         subject: "Your Subscription is Ending Soon",
         text: "Subscription notification",
-        // html: template(
-        //     name,
-        //     subscription_name,
-        //     date,
-        //     amount,
-        //     process.env.DASHBOARD_LINK || " http://localhost:3000/dashboard"
-        // ),
-        template: "email_notification.hbs",
-        context: {
+        html: template(
             name,
             subscription_name,
             date,
             amount,
-            dashboard:
-                process.env.DASHBOARD_LINK ||
-                " http://localhost:3000/dashboard",
-        },
+            process.env.DASHBOARD_LINK || " http://localhost:3000/dashboard"
+        ),
+        // template: "email_notification.hbs",
+        // context: {
+        //     name,
+        //     subscription_name,
+        //     date,
+        //     amount,
+        //     dashboard:
+        //         process.env.DASHBOARD_LINK ||
+        //         " http://localhost:3000/dashboard",
+        // },
     });
-
-    const test = fs.readFileSync("/test.txt");
-
-    return test;
 };
 
 module.exports = sendNotification;
