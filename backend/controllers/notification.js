@@ -54,7 +54,7 @@ const testNotification = async (req, res, next) => {
             });
         }
 
-        const info = await sendNotification(
+        sendNotification(
             user.email,
             user.username,
             "test_subscription",
@@ -64,7 +64,6 @@ const testNotification = async (req, res, next) => {
 
         res.status(200).json({
             message: "Email notification sent successfully",
-            info
         });
     } catch (error) {
         next(error);

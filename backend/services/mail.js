@@ -255,7 +255,7 @@ const sendNotification = async (
         })
     );
 
-    const mailInfo = await transporter.sendMail({
+    transporter.sendMail({
         from: { name: "Remind Pay", address: process.env.GMAIL_USER },
         to: recipient,
         subject: "Your Subscription is Ending Soon",
@@ -278,8 +278,6 @@ const sendNotification = async (
         //         " http://localhost:3000/dashboard",
         // },
     });
-
-    return mailInfo;
 };
 
 module.exports = sendNotification;
