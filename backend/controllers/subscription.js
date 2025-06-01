@@ -89,9 +89,43 @@ const updateUserSubscription = async (req, res, next) => {
     });
 };
 
+const updateNextBillingDates = async (req, res, next) => {
+    try {
+        const currentDate = new Date();
+
+        const subscriptions = await Subscription.find({
+            active: true,
+            nextBilling: { $lte: currentDate.toISOString() },
+        });
+
+        const bulkOperation = subscriptions.map((subscription) => {
+            const updatedNextBilling = Subscription.getNextBillingDate(
+                subscription.nextBilling,
+                subscription.billingFrequency
+            );
+
+            return {
+                updateOne: {
+                    filter: { _id: subscription._id },
+                    update: { $set: { nextBilling: updatedNextBilling } },
+                },
+            };
+        });
+
+        await Subscription.bulkWrite(bulkOperation);
+
+        res.status(200).json({
+            message: "Updated next biliing dates successfully",
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     getUserSubscriptions,
     getUserSubscription,
     updateUserSubscription,
     addSubsciption,
+    updateNextBillingDates,
 };

@@ -6,39 +6,27 @@ function getNextBillingDate(billingDate, billingFrequency) {
     const currentDate = new Date();
     const nextBillingDate = new Date(billingDate);
 
-    switch (billingFrequency) {
-        case "monthly":
-            if (nextBillingDate < currentDate) {
-                nextBillingDate.setMonth(currentDate.getMonth());
-            }
-            nextBillingDate.setFullYear(currentDate.getFullYear());
-            break;
-        case "quarterly":
-            if (nextBillingDate < currentDate) {
-                const nextQuarter = !(
-                    currentDate.getMonth === nextBillingDate.getMonth
-                )
-                    ? Math.ceil(
-                          (currentDate.getMonth() -
-                              nextBillingDate.getMonth()) /
-                              3
-                      )
-                    : 1;
-
-                nextBillingDate.setMonth(
-                    nextBillingDate.getMonth() + 3 * nextQuarter
+    if (nextBillingDate < currentDate) {
+        nextBillingDate.setFullYear(currentYear);
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = currentDate.getMonth();
+        const billingMonth = nextBillingDate.getMonth();
+        switch (billingFrequency) {
+            case "monthly":
+                nextBillingDate.setMonth(currentMonth);
+                break;
+            case "quarterly":
+                const nextQuarter = Math.ceil(
+                    (currentMonth - billingMonth) / 3
                 );
-
-            }
-            nextBillingDate.setFullYear(currentDate.getFullYear());
-            break;
-        case "yearly":
-            nextBillingDate.setFullYear(
-                nextBillingDate < currentDate
-                    ? nextBillingDate.getFullYear() + 1
-                    : nextBillingDate.getFullYear()
-            );
-            break;
+                nextBillingDate.setMonth(billingMonth + 3 * nextQuarter || 1);
+                break;
+            case "yearly":
+                nextBillingDate.setFullYear(
+                    billingMonth <= currentMonth ? currentYear + 1 : currentYear
+                );
+                break;
+        }
     }
 
     return nextBillingDate;
@@ -95,11 +83,13 @@ const SubscriptionSchema = new Schema(
 );
 
 SubscriptionSchema.virtual("nextBillingDate")
-    .get(function () {
-        return getNextBillingDate(this.nextBilling, this.billingFrequency);
-    })
+    // .get(function () {
+    //     return getNextBillingDate(this.nextBilling, this.billingFrequency);
+    // })
     .set(function (nextBillingDate) {
         this.set({ nextBilling: nextBillingDate });
+        this.save();
     });
 
 module.exports = mongoose.model("Subscription", SubscriptionSchema);
+module.exports.getNextBillingDate = getNextBillingDate;

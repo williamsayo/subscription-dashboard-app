@@ -10,11 +10,12 @@ const daysDifference = (today, billingDate) => {
 
 const activeSubscriptionNotification = async (req, res, next) => {
     try {
+        const currentDate = new Date();
+
         const activeSubscriptions = await Subscription.find({
             active: true,
+            nextBilling: { $gte: currentDate.toISOString() },
         }).populate("user_id", "email username");
-
-        const currentDate = new Date();
 
         await Promise.all(
             activeSubscriptions
@@ -27,7 +28,6 @@ const activeSubscriptionNotification = async (req, res, next) => {
                 .map((subscription) =>
                     sendNotification(
                         subscription.user_id.email,
-                        // "williamsayo04@gmail.com",
                         subscription.user_id.username,
                         subscription.name,
                         subscription.nextBilling.toLocaleDateString(),
@@ -65,11 +65,14 @@ const testNotification = async (req, res, next) => {
 
         res.status(200).json({
             message: "Email notification sent successfully",
-            info
+            info,
         });
     } catch (error) {
         next(error);
     }
 };
 
-module.exports = { activeSubscriptionNotification, testNotification };
+module.exports = {
+    activeSubscriptionNotification,
+    testNotification,
+};

@@ -23,7 +23,6 @@ const isAuthenticated = (req, res, next) => {
         req.user_id = decodedToken.user_id;
         next();
     } catch (error) {
-        console.log(error);
         if (error instanceof jwt.JsonWebTokenError) {
             error.statusCode = 401;
             error.message = "Invalid token";
@@ -33,7 +32,7 @@ const isAuthenticated = (req, res, next) => {
     }
 };
 
-const notificationAuthentication = (req, res, next) => {
+const cronAuthentication = (req, res, next) => {
     try {
         const authorization = req.headers.authorization;
 
@@ -57,4 +56,4 @@ const notificationAuthentication = (req, res, next) => {
     }
 };
 
-module.exports = { isAuthenticated, notificationAuthentication };
+module.exports = { isAuthenticated, cronAuthentication };

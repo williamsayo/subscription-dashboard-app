@@ -43,8 +43,8 @@ const subscriptionCheck = [
         .notEmpty(),
     body("billing_date")
         .trim()
-        .isDate({ strictMode: true, format: "MM/DD/YYYY" })
-        .withMessage("Must be a date and of format MM/DD/YYYY"),
+        .isDate({ strictMode: true, format: "YYYY-MM-DD" })
+        .withMessage("Must be a date and of format YYYY-MM-DD"),
 ];
 
 const phoneRegex = /^\+{1}([0-9]{5,14})$/;

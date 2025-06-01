@@ -3,16 +3,13 @@ const {
     activeSubscriptionNotification,
     testNotification,
 } = require("../controllers/notification");
-const {
-    notificationAuthentication,
-    isAuthenticated,
-} = require("../middleware/auth");
+const { cronAuthentication, isAuthenticated } = require("../middleware/auth");
 
 const router = express.Router();
 
 router.get(
     "/email/send-reminders",
-    notificationAuthentication,
+    cronAuthentication,
     activeSubscriptionNotification
 );
 

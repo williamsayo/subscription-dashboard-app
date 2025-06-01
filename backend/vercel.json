@@ -11,6 +11,10 @@
         {
             "path": "/notification/email/send-reminders",
             "schedule": "0 0 */7 * *"
+        },
+        {
+            "path": "/subscription/update-next-billing",
+            "schedule": "0 0 * * *"
         }
     ]
 }
