@@ -63,7 +63,7 @@ const Subscriptions = ({
                                 </span>
 
                                 <div>
-                                    <div className="flex items-center gap-2">
+                                    <div className="flex flex-col md:gap-2 md:flex-row md:items-center ">
                                         <h3 className="font-medium text-gray-800 capitalize">
                                             {subscription.name}
                                         </h3>
