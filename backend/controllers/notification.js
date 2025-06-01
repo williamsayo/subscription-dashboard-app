@@ -54,7 +54,7 @@ const testNotification = async (req, res, next) => {
             });
         }
 
-        sendNotification(
+        await sendNotification(
             user.email,
             user.username,
             "test_subscription",
