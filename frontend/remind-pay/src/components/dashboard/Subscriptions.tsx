@@ -67,19 +67,22 @@ const Subscriptions = ({
                                         <h3 className="font-medium text-gray-800 capitalize">
                                             {subscription.name}
                                         </h3>
-                                        {paymentStatus?.billingDue && (
-                                            <Badge className="bg-amber-500 text-white">
-                                                <BellRing className="h-3 w-3" />{" "}
-                                                Due in{" "}
-                                                {paymentStatus.differenceInDays}{" "}
-                                                {paymentStatus.differenceInDays >
-                                                1
-                                                    ? "days"
-                                                    : "day"}
-                                            </Badge>
-                                        )}
+                                        {paymentStatus?.billingDue &&
+                                            subscription.active && (
+                                                <Badge className="bg-amber-500 text-white">
+                                                    <BellRing className="h-3 w-3" />{" "}
+                                                    Due in{" "}
+                                                    {
+                                                        paymentStatus.differenceInDays
+                                                    }{" "}
+                                                    {paymentStatus.differenceInDays >
+                                                    1
+                                                        ? "days"
+                                                        : "day"}
+                                                </Badge>
+                                            )}
 
-                                        {dueToday && (
+                                        {dueToday && subscription.active && (
                                             <Badge className="bg-red-500 text-white">
                                                 <AlertCircle className="h-3 w-3" />{" "}
                                                 Due

@@ -13,13 +13,17 @@ function getNextBillingDate(billingDate, billingFrequency) {
         nextBillingDate.setFullYear(currentYear);
         switch (billingFrequency) {
             case "monthly":
-                nextBillingDate.setMonth(currentMonth);
+                nextBillingDate.setMonth(
+                    currentMonth === billingMonth
+                        ? currentMonth + 1
+                        : currentMonth
+                );
                 break;
             case "quarterly":
                 const nextQuarter = Math.ceil(
                     (currentMonth - billingMonth) / 3
                 );
-                nextBillingDate.setMonth(billingMonth + 3 * nextQuarter || 1);
+                nextBillingDate.setMonth(billingMonth + 3 * (nextQuarter || 1));
                 break;
             case "yearly":
                 nextBillingDate.setFullYear(
